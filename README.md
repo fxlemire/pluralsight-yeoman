@@ -23,3 +23,7 @@ that provide useful autocomplete features (IntelliSense) and some launch/task se
 * `npm run build`
 * `npm link`
 * `yo pluralsight-yeoman` in the directory you want to scaffold
+
+### Remove your npm link
+* `npm unlink`
+* `cd $(npm root -g)` then `ls` and remove the symbolic link
