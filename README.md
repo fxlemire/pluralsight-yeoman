@@ -13,9 +13,13 @@ that provide useful autocomplete features (IntelliSense) and some launch/task se
 * `npm install -g yo`
 * `git clone git@github.com:fxlemire/pluralsight-yeoman.git`
 * `npm install`
-* `npm link`
 
 ## VS Code Users
 * `npm install -g typings`
 * `typings install`
 * Install ESLint extension (`CTRL+P` + `'ext install ESLint'`)
+
+## Scaffold
+* `npm run build`
+* `npm link`
+* `yo pluralsight-yeoman` in the directory you want to scaffold
