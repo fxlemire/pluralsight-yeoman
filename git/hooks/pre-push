@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+'use strict'; // eslint-disable-line strict
+
+require('child_process').exec(
+  "git branch | grep '*'",
+  (err, stdout) => {
+    if (err) {
+      process.abort();
+    } else {
+      const name = stdout.replace('* ', '').replace('\n', '');
+
+      if (name === 'master') {
+        console.log('Please don\'t push to master');
+        process.abort();
+      }
+    }
+  }
+);
+
+// credits to https://github.com/jrans/Node-Git-Hooks
