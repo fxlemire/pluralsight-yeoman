@@ -89,16 +89,21 @@ class Generator extends Base {
       },
 
       git() {
-        this.composeWith('common', {
-          options: {
-            'skip-messages': true,
-            gitignore: true,
-            gitattributes: true,
-            jshintrc: false,
-            editorconfig: false,
-            'test-jshintrc': false
+        this.composeWith('common',
+          {
+            options: {
+              'skip-messages': true,
+              gitignore: true,
+              gitattributes: true,
+              jshintrc: false,
+              editorconfig: false,
+              'test-jshintrc': false
+            }
+          },
+          {
+            local: require.resolve('generator-common')
           }
-        });
+        );
       },
 
       bower() {
