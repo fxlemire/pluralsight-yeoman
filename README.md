@@ -30,7 +30,7 @@ that provide useful autocomplete features (IntelliSense).
 
 ## Remove your npm link
 * `npm unlink`
-* `cd $(npm root -g)` then `ls` and remove the symbolic link
+* `cd $(npm root -g)` then `ls` and remove the symbolic link if unlinking was not sufficient
 
 ## Test
 * `npm test`
