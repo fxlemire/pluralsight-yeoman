@@ -1,74 +1,74 @@
-import generator from 'yeoman-generator';
+import {Base} from 'yeoman-generator';
 
-module.exports = generator.Base.extend({
-  constructor(...args) {
-    Reflect.apply(generator.Base, this, args);
-  },
-
+class Generator extends Base {
   initializing() {
 
-  },
+  }
 
   prompting() {
 
-  },
+  }
 
   configuring() {
 
-  },
+  }
 
-  writing: {
-    gulpfile() {
+  get writing() {
+    return {
+      gulpfile() {
 
-    },
+      },
 
-    packageJSON() {
+      packageJSON() {
 
-    },
+      },
 
-    git() {
+      git() {
 
-    },
+      },
 
-    bower() {
+      bower() {
 
-    },
+      },
 
-    appStaticFiles() {
-      const that = this;
-      const favicon = 'favicon.ico';
+      appStaticFiles() {
+        const that = this;
 
-      that.log(`Template path: ${that.templatePath()}`);
-      that.log(`Destination path: ${that.destinationPath()}`);
+        const favicon = 'favicon.ico';
 
-      const source = that.templatePath(`_${favicon}`);
-      const destination = that.destinationPath(`src/${favicon}`);
+        that.log(`Template path: ${that.templatePath()}`);
+        that.log(`Destination path: ${that.destinationPath()}`);
 
-      that.log(`Source: ${source}`);
-      that.log(`Destination: ${destination}`);
+        const source = that.templatePath(`_${favicon}`);
+        const destination = that.destinationPath(`src/${favicon}`);
 
-      that.copy(`_${favicon}`, `src/${favicon}`);
-    },
+        that.log(`Source: ${source}`);
+        that.log(`Destination: ${destination}`);
 
-    scripts() {
+        that.copy(`_${favicon}`, `src/${favicon}`);
+      },
 
-    },
+      scripts() {
 
-    html() {
+      },
 
-    }
+      html() {
 
-  },
+      }
+    };
+  }
 
   conflicts() {
 
-  },
+  }
 
   install() {
 
-  },
+  }
 
   end() {
 
   }
-});
+}
+
+module.exports = Generator;
