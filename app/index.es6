@@ -35,7 +35,7 @@ class Generator extends Base {
         type: 'input',
         name: 'ngappname',
         message: 'Angular App Name (ng-app)',
-        default: 'app'
+        default: this.config.get('ngappname') || 'app'
       },
       {
         type: 'checkbox',
@@ -61,10 +61,11 @@ class Generator extends Base {
       }
     ], answers => {
       that.log(answers);
-      that.ngappname = answers.ngappname;
+      that.config.set('ngappname', answers.ngappname);
       that.includeLodash = _.includes(answers.jslibs, 'lodash');
       that.includeMoment = _.includes(answers.jslibs, 'momentjs');
       that.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
+      that.config.save();
       done();
     });
   }
@@ -88,7 +89,16 @@ class Generator extends Base {
       },
 
       git() {
-        this.copy('gitignore', '.gitignore');
+        this.composeWith('common', {
+          options: {
+            'skip-messages': true,
+            gitignore: true,
+            gitattributes: true,
+            jshintrc: false,
+            editorconfig: false,
+            'test-jshintrc': false
+          }
+        });
       },
 
       bower() {
@@ -135,7 +145,7 @@ class Generator extends Base {
           that.templatePath('app/_app.js'),
           that.destinationPath('src/app/app.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -143,7 +153,7 @@ class Generator extends Base {
           that.templatePath('app/layout/_shell.controller.js'),
           that.destinationPath('src/app/layout/shell.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -151,7 +161,7 @@ class Generator extends Base {
           that.templatePath('app/about/_about.controller.js'),
           that.destinationPath('src/app/about/about.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -159,7 +169,7 @@ class Generator extends Base {
           that.templatePath('app/home/_home.controller.js'),
           that.destinationPath('src/app/home/home.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
       },
@@ -172,7 +182,7 @@ class Generator extends Base {
           that.destinationPath('src/index.html'),
           {
             appname: _.startCase(that.appname),
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -199,11 +209,26 @@ class Generator extends Base {
   }
 
   install() {
+    const that = this;
 
+    that.installDependencies({
+      skipInstall: that.options['skip-install']
+    });
   }
 
   end() {
+    const that = this;
 
+    that.log(chalk.yellow.bold('Installation successful!'));
+
+    const howToInstall = `\nAfter running ${chalk.yellow.bold('npm install & bower install')},
+      inject your front end dependencies by running ${chalk.yellow.bold('gulp wiredep')}.`;
+
+    if (that.options['skip-install']) {
+      that.log(howToInstall);
+
+      return;
+    }
   }
 }
 
