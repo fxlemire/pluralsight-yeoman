@@ -1,13 +1,72 @@
 /* eslint consistent-this: [2, "that"] */
 import {Base} from 'yeoman-generator';
+import _ from 'lodash';
+import chalk from 'chalk';
+import yosay from 'yosay';
 
 class Generator extends Base {
+  constructor(...args) {
+    super(...args);
+    const that = this;
+
+    that.argument('appname', {type: String, required: true});
+    that.appname = _.kebabCase(that.appname);
+
+    that.option('includeutils', {
+      desc: 'Optionally includes Angular-UI Utils library.',
+      type: Boolean,
+      default: false
+    });
+  }
+
   initializing() {
 
   }
 
+  // prompts are based on InquireJS (https://github.com/SBoudrias/Inquirer.js/)
   prompting() {
+    const that = this;
+    const done = that.async();
 
+    that.log(yosay(`Welcome to ${chalk.yellow('YANG (Yet Another Angular Generator)')}`));
+
+    that.prompt([
+      {
+        type: 'input',
+        name: 'ngappname',
+        message: 'Angular App Name (ng-app)',
+        default: 'app'
+      },
+      {
+        type: 'checkbox',
+        name: 'jslibs',
+        message: 'Which JS libraries would you like to include?',
+        choices: [
+          {
+            name: 'lodash',
+            value: 'lodash',
+            checked: true
+          },
+          {
+            name: 'Moment.js',
+            value: 'momentjs',
+            checked: true
+          },
+          {
+            name: 'Angular-UI Utils',
+            value: 'angularuiutils',
+            checked: true
+          }
+        ]
+      }
+    ], answers => {
+      that.log(answers);
+      that.ngappname = answers.ngappname;
+      that.includeLodash = _.includes(answers.jslibs, 'lodash');
+      that.includeMoment = _.includes(answers.jslibs, 'momentjs');
+      that.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
+      done();
+    });
   }
 
   configuring() {
@@ -36,7 +95,7 @@ class Generator extends Base {
         const that = this;
 
         const bowerJson = {
-          name: 'my-app', // TODO: make dynamic
+          name: that.appname,
           license: 'MIT',
           dependencies: {}
         };
@@ -45,9 +104,18 @@ class Generator extends Base {
         bowerJson.dependencies['angular-bootstrap'] = '~0.13.4';
         bowerJson.dependencies['angular-ui-router'] = '~0.2.15';
         bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
-        bowerJson.dependencies.lodash = '~3.10.1';
-        bowerJson.dependencies.moment = '~2.10.6';
-        bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+
+        if (that.includeLodash) {
+          bowerJson.dependencies.lodash = '~3.10.1';
+        }
+
+        if (that.includeMoment) {
+          bowerJson.dependencies.moment = '~2.10.6';
+        }
+
+        if (that.options.includeutils || that.includeAngularUIUtils) {
+          bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+        }
 
         that.fs.writeJSON('bower.json', bowerJson);
         that.copy('bowerrc', '.bowerrc');
@@ -67,7 +135,7 @@ class Generator extends Base {
           that.templatePath('app/_app.js'),
           that.destinationPath('src/app/app.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -75,7 +143,7 @@ class Generator extends Base {
           that.templatePath('app/layout/_shell.controller.js'),
           that.destinationPath('src/app/layout/shell.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -83,7 +151,7 @@ class Generator extends Base {
           that.templatePath('app/about/_about.controller.js'),
           that.destinationPath('src/app/about/about.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -91,7 +159,7 @@ class Generator extends Base {
           that.templatePath('app/home/_home.controller.js'),
           that.destinationPath('src/app/home/home.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
       },
@@ -103,8 +171,8 @@ class Generator extends Base {
           that.templatePath('_index.html'),
           that.destinationPath('src/index.html'),
           {
-            appname: 'My Cool App',
-            ngapp: 'myapp'
+            appname: _.startCase(that.appname),
+            ngapp: that.ngappname
           }
         );
 
