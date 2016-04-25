@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel app/index.es6 -o app/index.js",
+    "build:sub": "./node_modules/.bin/babel ngc/index.es6 -o ngc/index.js",
     "test": "echo \"No tests specified.\" && exit 0",
     "postinstall": "npm run-script git:init",
     "git:init": "node git/init.js"

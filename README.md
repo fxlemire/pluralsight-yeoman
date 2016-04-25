@@ -22,7 +22,10 @@ that provide useful autocomplete features (IntelliSense) and some launch/task se
 ## Scaffold
 * `npm run build`
 * `npm link`
-* `yo pluralsight-yeoman` in the directory you want to scaffold
+* `yo pluralsight-yeoman MyAppName` in the directory you want to scaffold
+  * `yo pluralsight-yeoman:ngc MyController`
+  * `yo pluralsight-yeoman --help`
+  * `yo pluralsight-yeoman:ngc --help`
 
 ### Remove your npm link
 * `npm unlink`
