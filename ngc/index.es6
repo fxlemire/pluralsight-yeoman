@@ -9,6 +9,12 @@ class SubGenerator extends Base {
 
     that.argument('name', {type: String, required: true});
     console.log('inside ngc sub-generator', that.name);
+
+    that.option('view', {
+      desc: 'Determines if view is created along with controller',
+      type: Boolean,
+      default: false
+    });
   }
 
   writing() {
@@ -34,6 +40,16 @@ class SubGenerator extends Base {
         appName: that.config.get('ngappname')
       }
     );
+
+    if (that.options.view) {
+      that.fs.copyTpl(
+        that.templatePath('ng-view.html'),
+        that.destinationPath(`src/app/${fileNameFragment}/${fileNameFragment}.html`),
+        {
+          name: that.name
+        }
+      );
+    }
   }
 }
 
