@@ -2,6 +2,7 @@
   "ambientDependencies": {
     "angular": "registry:dt/angular#1.5.0+20160412133217",
     "gulp": "registry:dt/gulp#3.8.0+20160316155526",
+    "mocha": "registry:dt/mocha#2.2.5+20160317120654",
     "node": "registry:dt/node#4.0.0+20160423143914",
     "yeoman-generator": "registry:dt/yeoman-generator#0.0.0+20160317120654",
     "yosay": "registry:dt/yosay#0.0.0+20160316155526"
