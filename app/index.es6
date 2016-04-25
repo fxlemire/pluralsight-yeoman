@@ -35,8 +35,7 @@ class Generator extends Base {
         type: 'input',
         name: 'ngappname',
         message: 'Angular App Name (ng-app)',
-        default: 'app',
-        store: true
+        default: this.config.get('ngappname') || 'app'
       },
       {
         type: 'checkbox',
@@ -62,10 +61,11 @@ class Generator extends Base {
       }
     ], answers => {
       that.log(answers);
-      that.ngappname = answers.ngappname;
+      that.config.set('ngappname', answers.ngappname);
       that.includeLodash = _.includes(answers.jslibs, 'lodash');
       that.includeMoment = _.includes(answers.jslibs, 'momentjs');
       that.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
+      that.config.save();
       done();
     });
   }
@@ -136,7 +136,7 @@ class Generator extends Base {
           that.templatePath('app/_app.js'),
           that.destinationPath('src/app/app.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -144,7 +144,7 @@ class Generator extends Base {
           that.templatePath('app/layout/_shell.controller.js'),
           that.destinationPath('src/app/layout/shell.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -152,7 +152,7 @@ class Generator extends Base {
           that.templatePath('app/about/_about.controller.js'),
           that.destinationPath('src/app/about/about.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
@@ -160,7 +160,7 @@ class Generator extends Base {
           that.templatePath('app/home/_home.controller.js'),
           that.destinationPath('src/app/home/home.controller.js'),
           {
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
       },
@@ -173,7 +173,7 @@ class Generator extends Base {
           that.destinationPath('src/index.html'),
           {
             appname: _.startCase(that.appname),
-            ngapp: that.ngappname
+            ngapp: that.config.get('ngappname')
           }
         );
 
