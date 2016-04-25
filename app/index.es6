@@ -200,11 +200,26 @@ class Generator extends Base {
   }
 
   install() {
+    const that = this;
 
+    that.installDependencies({
+      skipInstall: that.options['skip-install']
+    });
   }
 
   end() {
+    const that = this;
 
+    that.log(chalk.yellow.bold('Installation successful!'));
+
+    const howToInstall = `\nAfter running ${chalk.yellow.bold('npm install & bower install')},
+      inject your front end dependencies by running ${chalk.yellow.bold('gulp wiredep')}.`;
+
+    if (that.options['skip-install']) {
+      that.log(howToInstall);
+
+      return;
+    }
   }
 }
 
