@@ -89,7 +89,16 @@ class Generator extends Base {
       },
 
       git() {
-        this.copy('gitignore', '.gitignore');
+        this.composeWith('common', {
+          options: {
+            'skip-messages': true,
+            gitignore: true,
+            gitattributes: true,
+            jshintrc: false,
+            editorconfig: false,
+            'test-jshintrc': false
+          }
+        });
       },
 
       bower() {
