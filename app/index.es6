@@ -35,7 +35,8 @@ class Generator extends Base {
         type: 'input',
         name: 'ngappname',
         message: 'Angular App Name (ng-app)',
-        default: 'app'
+        default: 'app',
+        store: true
       },
       {
         type: 'checkbox',
