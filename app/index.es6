@@ -1,10 +1,24 @@
 /* eslint consistent-this: [2, "that"] */
 import {Base} from 'yeoman-generator';
+import _ from 'lodash';
 import chalk from 'chalk';
-import lodash from 'lodash';
 import yosay from 'yosay';
 
 class Generator extends Base {
+  constructor(...args) {
+    super(...args);
+    const that = this;
+
+    that.argument('appname', {type: String, required: true});
+    that.appname = _.kebabCase(that.appname);
+
+    that.option('includeutils', {
+      desc: 'Optionally includes Angular-UI Utils library.',
+      type: Boolean,
+      default: false
+    });
+  }
+
   initializing() {
 
   }
@@ -41,7 +55,7 @@ class Generator extends Base {
         const that = this;
 
         const bowerJson = {
-          name: 'my-app', // TODO: make dynamic
+          name: that.appname,
           license: 'MIT',
           dependencies: {}
         };
@@ -52,7 +66,10 @@ class Generator extends Base {
         bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
         bowerJson.dependencies.lodash = '~3.10.1';
         bowerJson.dependencies.moment = '~2.10.6';
-        bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+
+        if (that.options.includeutils) {
+          bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+        }
 
         that.fs.writeJSON('bower.json', bowerJson);
         that.copy('bowerrc', '.bowerrc');
@@ -108,7 +125,7 @@ class Generator extends Base {
           that.templatePath('_index.html'),
           that.destinationPath('src/index.html'),
           {
-            appname: 'My Cool App',
+            appname: _.startCase(that.appname),
             ngapp: 'myapp'
           }
         );
