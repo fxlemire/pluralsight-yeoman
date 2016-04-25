@@ -1,5 +1,8 @@
 /* eslint consistent-this: [2, "that"] */
 import {Base} from 'yeoman-generator';
+import chalk from 'chalk';
+import lodash from 'lodash';
+import yosay from 'yosay';
 
 class Generator extends Base {
   initializing() {
@@ -7,7 +10,9 @@ class Generator extends Base {
   }
 
   prompting() {
+    const that = this;
 
+    that.log(yosay(`Welcome to ${chalk.yellow('YANG (Yet Another Angular Generator)')}`));
   }
 
   configuring() {
