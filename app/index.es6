@@ -25,8 +25,20 @@ class Generator extends Base {
 
   prompting() {
     const that = this;
+    const done = that.async();
 
     that.log(yosay(`Welcome to ${chalk.yellow('YANG (Yet Another Angular Generator)')}`));
+
+    that.prompt({
+      type: 'input',
+      name: 'ngappname',
+      message: 'Angular App Name (ng-app)',
+      default: 'app'
+    }, answers => {
+      that.log(answers);
+      that.ngappname = answers.ngappname;
+      done();
+    });
   }
 
   configuring() {
@@ -89,7 +101,7 @@ class Generator extends Base {
           that.templatePath('app/_app.js'),
           that.destinationPath('src/app/app.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -97,7 +109,7 @@ class Generator extends Base {
           that.templatePath('app/layout/_shell.controller.js'),
           that.destinationPath('src/app/layout/shell.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -105,7 +117,7 @@ class Generator extends Base {
           that.templatePath('app/about/_about.controller.js'),
           that.destinationPath('src/app/about/about.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
@@ -113,7 +125,7 @@ class Generator extends Base {
           that.templatePath('app/home/_home.controller.js'),
           that.destinationPath('src/app/home/home.controller.js'),
           {
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
       },
@@ -126,7 +138,7 @@ class Generator extends Base {
           that.destinationPath('src/index.html'),
           {
             appname: _.startCase(that.appname),
-            ngapp: 'myapp'
+            ngapp: that.ngappname
           }
         );
 
