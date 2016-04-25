@@ -23,20 +23,48 @@ class Generator extends Base {
 
   }
 
+  // prompts are based on InquireJS (https://github.com/SBoudrias/Inquirer.js/)
   prompting() {
     const that = this;
     const done = that.async();
 
     that.log(yosay(`Welcome to ${chalk.yellow('YANG (Yet Another Angular Generator)')}`));
 
-    that.prompt({
-      type: 'input',
-      name: 'ngappname',
-      message: 'Angular App Name (ng-app)',
-      default: 'app'
-    }, answers => {
+    that.prompt([
+      {
+        type: 'input',
+        name: 'ngappname',
+        message: 'Angular App Name (ng-app)',
+        default: 'app'
+      },
+      {
+        type: 'checkbox',
+        name: 'jslibs',
+        message: 'Which JS libraries would you like to include?',
+        choices: [
+          {
+            name: 'lodash',
+            value: 'lodash',
+            checked: true
+          },
+          {
+            name: 'Moment.js',
+            value: 'momentjs',
+            checked: true
+          },
+          {
+            name: 'Angular-UI Utils',
+            value: 'angularuiutils',
+            checked: true
+          }
+        ]
+      }
+    ], answers => {
       that.log(answers);
       that.ngappname = answers.ngappname;
+      that.includeLodash = _.includes(answers.jslibs, 'lodash');
+      that.includeMoment = _.includes(answers.jslibs, 'momentjs');
+      that.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
       done();
     });
   }
@@ -76,10 +104,16 @@ class Generator extends Base {
         bowerJson.dependencies['angular-bootstrap'] = '~0.13.4';
         bowerJson.dependencies['angular-ui-router'] = '~0.2.15';
         bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
-        bowerJson.dependencies.lodash = '~3.10.1';
-        bowerJson.dependencies.moment = '~2.10.6';
 
-        if (that.options.includeutils) {
+        if (that.includeLodash) {
+          bowerJson.dependencies.lodash = '~3.10.1';
+        }
+
+        if (that.includeMoment) {
+          bowerJson.dependencies.moment = '~2.10.6';
+        }
+
+        if (that.options.includeutils || that.includeAngularUIUtils) {
           bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
         }
 
