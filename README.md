@@ -1,11 +1,11 @@
 Pluralsight React Webpack
 =========================
-This repo is the product of following [Steve Michelotti](http://app.pluralsight.com/author/steve-michelotti)'s class:[Yeoman Fundamentals](http://app.pluralsight.com/courses/yeoman-fundamentals).
+This repo is the product of following [Steve Michelotti](http://app.pluralsight.com/author/steve-michelotti)'s class: [Yeoman Fundamentals](http://app.pluralsight.com/courses/yeoman-fundamentals).
 
-I went beyond the scope of this class by adding thorough [ESLinting](http://eslint.org/) and git hooks.
+Unlike the original course, this project was coded using ES6. I also went beyond the scope of this class by adding thorough [ESLinting](http://eslint.org/) and git hooks.
 
 Finally, I used [VSCode](https://code.visualstudio.com/) as a text editor, so some useful features will also be found in this repo, such as the use of [typings](https://github.com/typings)
-that provide useful autocomplete features (IntelliSense) and some launch/task settings.
+that provide useful autocomplete features (IntelliSense).
 
 # Installation
 
@@ -20,13 +20,17 @@ that provide useful autocomplete features (IntelliSense) and some launch/task se
 * Install ESLint extension (`CTRL+P` + `'ext install ESLint'`)
 
 ## Scaffold
-* `npm run build`
 * `npm link`
-* `yo pluralsight-yeoman MyAppName` in the directory you want to scaffold
-  * `yo pluralsight-yeoman:ngc MyController`
-  * `yo pluralsight-yeoman --help`
-  * `yo pluralsight-yeoman:ngc --help`
+* `npm run build` then `yo pluralsight-yeoman MyAppName` in the project directory you want to scaffold
+* `npm run build:ngc` then `yo pluralsight-yeoman:ngc MyController` in the project directory you want to scaffold
 
-### Remove your npm link
+## Help
+* `yo pluralsight-yeoman --help`
+* `yo pluralsight-yeoman:ngc --help`
+
+## Remove your npm link
 * `npm unlink`
 * `cd $(npm root -g)` then `ls` and remove the symbolic link
+
+## Test
+* `npm test`
